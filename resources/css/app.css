@@ -7,6 +7,21 @@
     min-height: 100vh;
 }
 
+.preview-img{
+    width: 300px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+@media(max-width: 576px){
+
+    .preview-img{
+        width: 100%;
+    }
+
+}
+
 
 
 

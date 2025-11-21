@@ -1,8 +1,17 @@
 import Layout from "@/components/Layout";
 import { Head, useForm } from "@inertiajs/react";
+import { useState } from "react";
 import Card from 'react-bootstrap/Card';
 
 export default function Home(){
+
+    const [ preview, setPreview ] = useState('');
+    const [ dimensoes, setDimensoes ] = useState({
+        with: 0,
+        heigth: 0
+    });
+
+    const [ loading, setLoading ] = useState(false);
 
     const { data, setData, post, errors } = useForm({
         imagem: null,
@@ -12,26 +21,67 @@ export default function Home(){
 
     const handleEnviarImagem = (e:any) => {
 
-        setData('imagem', e);
-        
+        const file = e;
+
+        if(!file){
+
+            alert('Erro ao tentar carregar arquivo.');
+            return;
+        }
+
+        const url:any = URL.createObjectURL(file);
+        setPreview(url);
+
+        const img = new Image();
+        img.src = url;
+
+        img.onload = () => {
+
+            setDimensoes({
+                with: img.width,
+                heigth: img.height
+            })
+
+        }
+
+        setData('imagem', file);
     }
 
     const handleRedimensionar = (e:any) => {
 
         e.preventDefault();
 
-        post('/redimensionarImg', {
+        setLoading(true);
+
+        post('/redimensionarImg', { 
 
             forceFormData: true,
 
             onSuccess: () => {
+
+                setLoading(false);
+
+                const imagem:any = document.getElementById('imagem');
+
+                if(imagem){
+                    imagem.value = '';
+                }
 
                 setData({
                     imagem: null,
                     largura: '',
                     altura: ''
                 });
+
+                setPreview('');
+                
                 window.location.href = '/download-imagem';
+            },
+
+            onError: () => {
+
+                setLoading(false);
+
             }
         })
 
@@ -98,11 +148,26 @@ export default function Home(){
                     </div>
 
                     <div className="mt-3">
-                        <button type="submit" className="btn btn-primary">
+                        <button type="submit" className="btn btn-primary" disabled={loading}>
                             Redimensionar
                         </button>
                     </div>
                 </form>
+
+                {
+                    preview 
+                    &&
+                    <div className="mt-5 text-center">
+                        <div className="mb-2">Largura:  {dimensoes.with}, Altura: {dimensoes.heigth}</div>
+                        <picture>
+                            <img 
+                                className="preview-img"
+                                src={preview} 
+                                alt="preview" 
+                            />
+                        </picture>
+                    </div>
+                }
             </section>
 
             <section>

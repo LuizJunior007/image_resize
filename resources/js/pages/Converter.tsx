@@ -92,7 +92,7 @@ export default function Converter(){
                         <Card>
                             <Card.Body>
                                 <div className="text-center">
-                                    <i className="bi bi-aspect-ratio fs-1 text-primary"></i>
+                                    <i className="bi bi-filetype-jpg text-primary fs-1"></i>
                                 </div>
                                 <Card.Title>2 - Formato</Card.Title>
                                 <Card.Text>
@@ -106,7 +106,7 @@ export default function Converter(){
                         <Card>
                             <Card.Body>
                                 <div className="text-center">
-                                    <i className="bi bi-images fs-1 text-primary"></i>
+                                    <i className="bi bi-arrow-clockwise fs-1 text-primary"></i>
                                 </div>
                                 <Card.Title>3 - Converter</Card.Title>
                                 <Card.Text>
